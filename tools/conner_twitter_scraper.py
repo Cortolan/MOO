@@ -1,7 +1,4 @@
-"""
-conner_twitter_scraper.py
-This was initially used to gain experience working with APIs.
-"""
+# conner_twitter_scraper.py
 
 import pandas as pd 
 import requests 
@@ -11,153 +8,60 @@ import matplotlib
 import matplotlib.pyplot as plt
 import json
 import tweepy
+
 from getpass import getpass
 from pathlib import Path
 import pickle
 import itertools
+
 import nltk
 import pprint
 
 with open("keys.json") as f:
     keys = json.load(f)
 
-"""## Example - Get some Tweets
-These next few lines load some tweets by '@packers'. 
-"""
+#########################################################################################################
+# Getting some example tweets
+twitter_username = "elonmusk"
 
-ds_tweets_save_path = "Packers_recent_tweets.pkl"
+ds_tweets_save_path = "{}_recent_tweets.pkl".format(twitter_username)
 
-# Guarding against attempts to download the data multiple times: 
 if not Path(ds_tweets_save_path).is_file():
-    # use keys loaded in above by Method 1 or 2 
-
-    # Authenticating: 
     auth = tweepy.OAuthHandler(keys["consumer_key"], keys["consumer_secret"])
     auth.set_access_token(keys["access_token"], keys["access_token_secret"])
     api = tweepy.API(auth)
-
-    # Getting as many recent tweets by @packers as Twitter will let us have 
-    example_tweets = list(tweepy.Cursor(api.user_timeline, id="packers").items())
-
-    # Saving the tweets to a file as "pickled" objects: 
+    example_tweets = list(tweepy.Cursor(api.user_timeline, id=twitter_username).items())
     with open(ds_tweets_save_path, "wb") as f:
         import pickle 
         pickle.dump(example_tweets, f)
 
-# Re-loading the results
 with open(ds_tweets_save_path, "rb") as f:
     import pickle 
     example_tweets = pickle.load(f)
 
-# Looking at one tweet object, which has type Status: 
-print(example_tweets[0])
+#print(example_tweets[0].text)
 
-import pprint
-pprint.pprint(vars(example_tweets[0]))
-
-##########################################################
-quit()
-##########################################################
-
-"""## Q2 - (15 pts)
-This downloads all recent tweets by a Twitter account of your choosing.
-"""
-
+#########################################################################################################
 def download_recent_tweets_by_user(user_account_name, keys): 
-    """
-    Input Args: 
-        user_account_name (str): The name of hte Twitter account whose tweets will be downloaded. 
-        keys (dict): A Python dictionary with Twitter authentication keys. See keys_blank.json for the proper format.
-        
-    Returns: 
-        list of Status objects, each representing one tweet.
-    """
-    ### BEGIN SOLUTION
     auth = tweepy.OAuthHandler(keys["consumer_key"], keys["consumer_secret"])
     auth.set_access_token(keys["access_token"], keys["access_token_secret"])
     api = tweepy.API(auth)
-
-    # Getting as many recent tweets by @packers as Twitter will let us have 
     example_tweets = list(tweepy.Cursor(api.user_timeline, id=user_account_name).items())
-
-    
     return example_tweets
-    ### END SOLUTION
 
 def save_tweets(tweets, path):
-    """Saves a list of tweets to a file in the local filesystem. 
-
-    This function makes no guarantee about the format of the saved
-    tweets, **except** that calling load_tweets(path) after
-    save_tweets(tweets, path) will produce the same list of tweets
-    and that only the file at the given path is used to store the
-    tweets.  (That means you can implement this function however
-    you want, as long as saving and loading works!)
-
-    Input Args: 
-      tweets (list): A list of tweet objects (of type Status) to be saved. 
-      path (str): The place where the tweets will be saved. 
-
-    Returns: 
-       None.
-    """
-    ### BEGIN SOLUTION
-    '''
-    if not Path(path).is_file():
-      # use keys loaded in above by Method 1 or 2 
-    '''
-
-      # Saving the tweets to a file as "pickled" objects: 
     with open(path, "wb") as f:
       import pickle 
       pickle.dump(tweets, f)
 
-    ### END SOLUTION
-
 def load_tweets(path): 
-    """Loads tweets that have previously been saved. 
-
-    Calling load_tweets(path) after save_tweets(tweets, path) will produce 
-    the same list of tweets. 
-
-    Input Args: 
-      path (str): The place where the tweets were to be saved. 
-
-    Returns: 
-      list: A list of tweet objects (of type Status), each representing one tweet 
-    """
-    ### BEGIN SOLUTION
     with open(path, 'rb') as f:
       import pickle
       tweets = pickle.load(f)
     
     return tweets
-    ### END SOLUTION
-
-# When you are done writing the functions above, run this cell to load 
-#  @Dodgers tweets.  Note the function "get_tweets_with_cache".  You may find it
-#  useful later. 
 
 def get_tweets_with_cache(user_account_name, keys): 
-    """Get recent tweets from one user, loading from a disk cache if available.
-    
-    The first time you call this function, it will download tweets by
-    a user.  Subsequent calls will not re-download the tweets; instead
-    they'll load the tweets from a save file in your local filesystem.
-    All this is done using the functions you defined in the previous cell.
-    This has benefits and drawbacks that often appear when you cache data:
-    
-    +: Using this function will prevent extraneous usage of the Twitter API.
-    +: You will get your data much faster after the first time it's called.
-    -: If you really want to re-download the tweets (say, to get newer ones,
-       or because you screwed up something in the previous cell and your
-       tweets aren't what you wanted), you'll have to find the save file
-       (which will look like <something>_recent_tweets.pkl) and delete it.
-    
-    Args:
-        user_account_name (str): The Twitter handle of a user, without the @.
-        keys (dict): A Python dictionary with Twitter authentication keys 
-    """
     save_path = "{}_recent_tweets.pkl".format(user_account_name)
     from pathlib import Path 
     if not Path(save_path).is_file():
@@ -165,18 +69,13 @@ def get_tweets_with_cache(user_account_name, keys):
         save_tweets(tweets, save_path)
     return load_tweets(save_path)
 
-# Test your code with the LA Dodgers account
-dodgers_tweets = get_tweets_with_cache("Dodgers", keys)
-
-# If everything is working properly you can look at the tweets 
-dodgers_tweets[0]
-
-pprint.pprint(vars(dodgers_tweets[0]))
-
-"""Check the @Dodgers tweets to make sure everything is working then load up the tweets from the account of your choosing."""
-
 cr_tweets = get_tweets_with_cache('CriticalRole', keys)
-cr_tweets[0]
+print(cr_tweets[0].text)
+
+#########################################################################################################
+quit()
+#########################################################################################################
+
 
 """## Exploring the dataset 
 
