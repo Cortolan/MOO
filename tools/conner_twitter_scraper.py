@@ -1,37 +1,26 @@
 # conner_twitter_scraper.py
 
 import pandas as pd 
-import requests 
 import re 
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 import json
 import tweepy
-
-from getpass import getpass
 from pathlib import Path
 import pickle
-import itertools
-import collections
-
-import nltk
-import pprint
 
 with open("keys.json") as f:
     keys = json.load(f)
 
 #########################################################################################################
 # Getting some example tweets
-twitter_username = "elonmusk"
+user_account_name = "elonmusk"
 
-ds_tweets_save_path = "{}_recent_tweets.pkl".format(twitter_username)
+ds_tweets_save_path = "{}_recent_tweets.pkl".format(user_account_name)
 
 if not Path(ds_tweets_save_path).is_file():
     auth = tweepy.OAuthHandler(keys["consumer_key"], keys["consumer_secret"])
     auth.set_access_token(keys["access_token"], keys["access_token_secret"])
     api = tweepy.API(auth)
-    example_tweets = list(tweepy.Cursor(api.user_timeline, id=twitter_username).items())
+    example_tweets = list(tweepy.Cursor(api.user_timeline, id=user_account_name).items())
     with open(ds_tweets_save_path, "wb") as f:
         import pickle 
         pickle.dump(example_tweets, f)
