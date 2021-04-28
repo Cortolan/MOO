@@ -6,13 +6,20 @@ def cleanhtml(text):
   cleantext = re.sub(cleanr, '', text)
   return cleantext
 
-def scrape_rss(input_file = "rss_links.txt", scrape_type = "title"):
+def scrape_rss(scrape_type = "title"):
   input_file = open(input_file, 'r')
   rss_feed = input_file.readline()
   rss_feed = rss_feed.rstrip()
   
   while rss_feed:
-    news_feed = feedparser.parse(rss_feed)
+    try:
+        news_feed = feedparser.parse(rss_feed)
+        return print('The scraping job succeeded: ', news_feed.status_code)
+    except Exception as e:
+        print('The scraping job failed. See exception: ')
+        print(e)
+        continue
+
     for entry in news_feed.entries:
       # Params available summary_detail, published_parsed, links, title, summary, guidislink, title_detail, link, published, id
       if scrape_type == "title":
@@ -25,4 +32,6 @@ def scrape_rss(input_file = "rss_links.txt", scrape_type = "title"):
 
   input_file.close()
 
+
+input_file = "rss_links.txt"
 scrape_rss()
