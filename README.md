@@ -1,5 +1,5 @@
 # Crypto-and-Stock-ML-model
-to the moon
+The goal of this program is to provice senitiment analaysis on Crypto/Stock RSS feeds and Tweets to gauge overall public opinon of asset for a selected time period.
 
 ### OUTPUT:
 	1. Top Stocks/Crypto showing positive news/sentiment for the day/week/month with X number of links as support
@@ -31,3 +31,12 @@ If someone has your authentication keys, they can access your Twitter account an
 
 ### IMPORTANT NOTE ON REQUESTING DATA.
 Twitter limits developers to a certain rate of requests for data.  If you make too many requests in a short period of time, you'll have to wait awhile (around 15 minutes) before you can make more.  So carefully follow the code examples you see and don't rerun cells without thinking.  Instead, always save the data you've collected to a file.  You are provided templates to help you do that.
+
+### REQUIRMENTS
+
+Python 3.6 or newer
+python packages
+    - feedparser
+
+### Install 
+python -m pip install feedparser
