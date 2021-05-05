@@ -1,6 +1,22 @@
 # Crypto-and-Stock-ML-model
 to the moon
 
+### OUTPUT:
+	1. Top Stocks/Crypto showing positive news/sentiment for the day/week/month with X number of links as support
+	2. Estimation on when to expect increase in price. Use NLP for qualitative analysis of Stock/Crypto data
+	3. Total number of sources mentioned
+	4. (Optional) Input holdings
+	5. (Optional) Sell approximation (when to sell and sell limit)
+	6. (Optional) Graph of ratings of selected Stocks/Cryptos over time (quantitative analysis)
+	7. (Optional) Track trending prices (Don't buy at peak, don't sell at dip)
+	8. (Optional) Kickback options (Dividends, etc)
+
+### INPUT:
+	1. rss scrap for news
+	2. Tweet scrape for news
+	3. Website scraping on camponay sites for dates/upcoming events
+	4. Market history, market cap, volume, other quantitative statistics
+
 ### TO CREATE A TWITTER DEVELOPER ACCOUNT:
 1. [Create a Twitter account](https://twitter.com).  You can use an existing account if you have one.
 2. Under account settings, add your phone number to the account.
