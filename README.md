@@ -39,4 +39,4 @@ python packages
     - feedparser
 
 ### Install 
-python -m pip install feedparser
+python -m pip install feedparser tweepy
