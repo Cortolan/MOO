@@ -27,7 +27,7 @@ def write_tweets(NUM_TWEETS):
         os.makedirs(os.path.dirname(tweets_save_path), exist_ok=True)
         auth = tweepy.OAuthHandler(keys['consumer_key'], keys['consumer_secret'])
         auth.set_access_token(keys['access_token'], keys['access_token_secret'])
-        api = tweepy.API(auth)
+        api = tweepy.API(auth, wait_on_rate_limit=True)
         tweets = list(tweepy.Cursor(api.search, q=hashtag, rpp=100, tweet_mode='extended').items(NUM_TWEETS))
         print('API accessed successfully')
 
@@ -46,5 +46,5 @@ def read_tweets():
                     print(i,'#'*40)
                     print(tweet.full_text)
 
-#write_tweets(100)
+write_tweets(100)
 #read_tweets()
