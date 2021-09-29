@@ -14,7 +14,7 @@ with open("{}/keys.json".format(FILE_DIRECTORY)) as f:
     keys = json.load(f)
 
 def get_hashtags():
-    hashtag_txt = open('hashtags.txt', 'r')
+    hashtag_txt = open('{}/hashtags.txt'.format(FILE_DIRECTORY), 'r')
     hashtag_list = hashtag_txt.readlines()
     for entry, tag in enumerate(hashtag_list):
         hashtag_list[entry] = tag[:-1].lower()
@@ -30,11 +30,11 @@ def write_tweets(num_tweets):
         auth.set_access_token(keys['access_token'], keys['access_token_secret'])
         api = tweepy.API(auth, wait_on_rate_limit=True)
         tweets = list(tweepy.Cursor(api.search, q=hashtag, rpp=100, tweet_mode='extended').items(num_tweets))
-        print('Looking up {}, API accessed successfully'.format(hashtag))
+        print('Looking up {}'.format(hashtag))
 
         with open(tweets_save_path, 'wb') as f:
             pickle.dump(tweets, f)
-            print('{} tweets serialized successfully'.foramt(hashtag))
+            print('{}tweets serialized successfully'.format(hashtag))
 
 def read_tweets():
     for root, dir, file, in os.walk('tweets'):
